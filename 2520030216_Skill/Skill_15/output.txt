@@ -1,0 +1,3 @@
+Output redirection test successful.
+This text was redirected to the file.
+Skill_15 verified stdout redirection.
