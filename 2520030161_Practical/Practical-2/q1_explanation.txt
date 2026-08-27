@@ -1,0 +1,31 @@
+Practical 2 - Question 1
+User Space and Kernel Space Transition
+
+The C program copies the contents of input.txt to output.txt using
+the Linux system calls open(), read(), write(), and close().
+
+1. open()
+   The program starts in user space and calls open().
+   The request enters kernel space through a system call.
+   The Linux kernel opens the file and returns a file descriptor
+   to the user program.
+
+2. read()
+   The program calls read() to obtain data from the input file.
+   Control transfers from user space to kernel space.
+   The kernel reads the requested data and copies it into the
+   buffer provided by the user program.
+
+3. write()
+   The program calls write() to send the data to output.txt.
+   The request enters kernel space and the kernel writes the
+   data to the destination file.
+
+4. close()
+   The program calls close() to release the file descriptors.
+   The kernel closes the files and releases the associated
+   resources.
+
+Therefore, open(), read(), write(), and close() provide an interface
+between the user-space application and kernel-space operating system
+services.
