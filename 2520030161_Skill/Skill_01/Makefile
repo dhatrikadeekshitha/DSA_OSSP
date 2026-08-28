@@ -1,10 +1,7 @@
 CC = gcc
 CFLAGS = -Wall
-
 all: process
-
 process: process.c
-	gcc -Wall process.c -o process
-
+ gcc -Wall process.c -o process
 clean:
-	rm -f process
+ rm -f process
