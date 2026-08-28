@@ -1,0 +1,214 @@
+SKILL-25 ARCHITECTURE DOCUMENTATION
+===================================
+
+1. SYSTEM ARCHITECTURE
+----------------------
+
+                         USER
+                          |
+                          v
+                   COMMAND INTERFACE
+                          |
+                          v
+                    COMMAND PARSER
+                          |
+             +------------+------------+
+             |                         |
+             v                         v
+       PIPELINE MODULE            JOB MODULE
+             |                         |
+       pipe() / fork()            fork()
+             |                         |
+           dup2()                execvp()
+             |                         |
+         execvp()                  PROCESS
+             |                         |
+             +------------+------------+
+                          |
+                          v
+                       waitpid()
+                          |
+                          v
+                  STATUS ANALYSIS
+                          |
+             +------------+------------+
+             |                         |
+             v                         v
+       RESOURCE MONITOR          PERFORMANCE
+             |                    ANALYSIS
+             +------------+------------+
+                          |
+                          v
+                       REPORT
+
+
+2. PIPELINE EXECUTION PATH
+--------------------------
+
+User enters pipeline
+        |
+        v
+Parse pipeline stages
+        |
+        v
+Create required pipes
+        |
+        v
+Fork child for each stage
+        |
+        v
+Connect pipe descriptors using dup2()
+        |
+        v
+Close unused descriptors
+        |
+        v
+Execute each command using execvp()
+        |
+        v
+Parent waits using waitpid()
+        |
+        v
+Check exit status
+        |
+        v
+Detect failures
+        |
+        v
+Measure execution time
+        |
+        v
+Display result
+
+
+3. MULTIPLE JOB EXECUTION
+--------------------------
+
+User requests stability test
+        |
+        v
+Create multiple child processes
+        |
+        v
+Store PIDs in job table
+        |
+        v
+Monitor using waitpid(WNOHANG)
+        |
+        v
+Update job state
+        |
+        +------> RUNNING
+        |
+        +------> COMPLETED
+        |
+        +------> FAILED
+
+
+4. SYSTEM CALLS
+---------------
+
+fork()
+Creates a child process.
+
+pipe()
+Creates a unidirectional communication channel.
+
+dup2()
+Connects a pipe to standard input or standard output.
+
+execvp()
+Replaces the child process with the requested command.
+
+waitpid()
+Waits for child processes and obtains their exit status.
+
+getrusage()
+Obtains CPU and memory-related resource statistics.
+
+gettimeofday()
+Provides timestamps used to calculate execution time.
+
+kill()
+Sends a signal to a process.
+
+close()
+Releases file descriptors.
+
+
+5. DESIGN DECISIONS
+-------------------
+
+- Maximum pipeline stages: 16.
+- Each pipeline stage executes in a separate child.
+- Pipes connect neighboring pipeline stages.
+- Unused descriptors are closed to prevent resource leaks.
+- Parent waits for all pipeline children.
+- Background jobs are stored in a fixed-size job table.
+- Exit codes identify successful and failed processes.
+- Resource usage is obtained using getrusage().
+- Execution time is measured using gettimeofday().
+- Functional modules separate parsing, execution,
+  monitoring and documentation.
+
+
+6. PERFORMANCE ANALYSIS
+-----------------------
+
+The program measures:
+
+- Pipeline execution time
+- User CPU time
+- System CPU time
+- Maximum resident memory
+- Page reclaims
+- Page faults
+- Voluntary context switches
+- Involuntary context switches
+
+These measurements help analyze the stability and
+performance of large pipelines.
+
+
+7. FAILURE HANDLING
+-------------------
+
+A pipeline failure is detected when a child:
+
+- Returns a non-zero exit status, or
+- Is terminated by a signal.
+
+The final pipeline result is reported as:
+
+SUCCESS
+or
+FAILURE.
+
+
+8. RESOURCE CLEANUP
+-------------------
+
+The program closes all pipe file descriptors in
+both child and parent processes.
+
+The parent waits for all pipeline children.
+
+Remaining background jobs are terminated when
+the program exits.
+
+
+9. RESULT
+---------
+
+Skill-25 successfully demonstrates:
+
+- Large pipeline execution
+- Multiple job launching
+- Job monitoring
+- Resource monitoring
+- Failure detection
+- Performance analysis
+- Architecture documentation
+- Execution-path documentation
+- System-call documentation
+- Design-decision documentation
