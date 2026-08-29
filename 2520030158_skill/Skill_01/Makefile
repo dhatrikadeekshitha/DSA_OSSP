@@ -5,4 +5,3 @@ process: process.c
  gcc -Wall process.c -o process
 clean:
  rm -f process
-

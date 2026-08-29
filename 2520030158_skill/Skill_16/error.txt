@@ -1,0 +1,2 @@
+Skill_16 test error: this message goes to stderr.
+Error test: requested file does not exist.
