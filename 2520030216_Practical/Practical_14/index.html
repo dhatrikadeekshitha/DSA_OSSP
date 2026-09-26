@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Practical 14 - AngularJS Expressions</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f6f8;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 25px;
+        }
+
+        .box {
+            background-color: #eef3f8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: 250px;
+        }
+
+        p {
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body ng-controller="ExpressionController">
+
+    <div class="container">
+
+        <h1>Practical_14</h1>
+
+        <h2>AngularJS Expressions</h2>
+
+        <div class="box">
+            <h3>1. String Expression</h3>
+
+            <p>Name: {{ name }}</p>
+            <p>Welcome Message: {{ "Welcome " + name }}</p>
+            <p>Uppercase Name: {{ name.toUpperCase() }}</p>
+        </div>
+
+
+        <div class="box">
+            <h3>2. Array Expression</h3>
+
+            <p>First Subject: {{ subjects[0] }}</p>
+            <p>Second Subject: {{ subjects[1] }}</p>
+            <p>Number of Subjects: {{ subjects.length }}</p>
+            <p>All Subjects: {{ subjects.join(", ") }}</p>
+        </div>
+
+
+        <div class="box">
+            <h3>3. Object Expression</h3>
+
+            <p>Student Name: {{ student.name }}</p>
+            <p>Roll Number: {{ student.rollNo }}</p>
+            <p>Branch: {{ student.branch }}</p>
+            <p>College: {{ student.college }}</p>
+        </div>
+
+
+        <div class="box">
+            <h3>4. Arithmetic Expression</h3>
+
+            <p>Marks 1: {{ mark1 }}</p>
+            <p>Marks 2: {{ mark2 }}</p>
+            <p>Total Marks: {{ mark1 + mark2 }}</p>
+            <p>Average: {{ (mark1 + mark2) / 2 }}</p>
+        </div>
+
+
+        <div class="box">
+            <h3>5. Using $eval()</h3>
+
+            <input type="text"
+                   ng-model="expression"
+                   placeholder="Enter expression">
+
+            <p>Expression: {{ expression }}</p>
+
+            <p>Result using $eval(): {{ evaluate(expression) }}</p>
+        </div>
+
+
+        <div class="box">
+            <h3>6. $eval() with Scope Variables</h3>
+
+            <input type="text"
+                   ng-model="evalExpression"
+                   placeholder="Example: mark1 + mark2">
+
+            <p>Expression: {{ evalExpression }}</p>
+
+            <p>Evaluated Result: {{ evaluate(evalExpression) }}</p>
+        </div>
+
+    </div>
+
+
+    <script>
+        var app = angular.module("myApp", []);
+
+        app.controller("ExpressionController", function($scope) {
+
+            $scope.name = "Deekshitha";
+
+            $scope.subjects = [
+                "Java",
+                "Data Structures",
+                "Web Development",
+                "Operating Systems"
+            ];
+
+            $scope.student = {
+                name: "Deekshitha",
+                rollNo: "2520030216",
+                branch: "CSE",
+                college: "KLH University"
+            };
+
+            $scope.mark1 = 85;
+            $scope.mark2 = 90;
+
+            $scope.expression = "10 + 20";
+
+            $scope.evalExpression = "mark1 + mark2";
+
+            $scope.evaluate = function(expression) {
+                return $scope.$eval(expression);
+            };
+
+        });
+    </script>
+
+</body>
+
+</html>
